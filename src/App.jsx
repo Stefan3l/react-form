@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 
 export default function App() {
@@ -6,7 +7,21 @@ export default function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(productName);
+
+    // pushare il nuovo prodotto nell'array
+    setProductList((curentState) => [...curentState, productName]);
+
+    // svotiamo il campo input
+  };
+
+  const emptyList = () => {
+    setProductList([]);
+  };
+
+  const handleDelete = (productToDelete) => {
+    setProductList((curentState) =>
+      curentState.filter((product) => product !== productToDelete)
+    );
   };
 
   return (
@@ -14,10 +29,15 @@ export default function App() {
       <h1>Lista della spesa</h1>
       <ul>
         {productList.map((product, index) => (
-          <li key={index}>{product}</li>
+          <li key={index}>
+            {product}
+            <button onClick={() => handleDelete(product)}>🗑️</button>
+          </li>
         ))}
       </ul>
-      <button type="submit">Cancella lista</button>
+      <button type="submit" onClick={emptyList}>
+        Cancella lista
+      </button>
       <hr />
       <h1>Aggiungi prodotto</h1>
       <form onSubmit={handleSubmit}>
